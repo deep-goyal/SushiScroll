@@ -6,10 +6,10 @@ export interface Anime {
   title: string;
   coverImage: string;
   description: string;
+  rating: number;
 }
 
 const useFetchAnime = () => {
-  // Rename hook to follow convention
   const [animeArray, setAnimeArray] = useState<Anime[]>([]);
 
   useEffect(() => {
@@ -20,14 +20,13 @@ const useFetchAnime = () => {
             media(sort: POPULARITY_DESC, type: ANIME) {
               id
               title {
-                english
                 romaji
               }
               coverImage {
                 extraLarge
-                medium
               }
               description
+              averageScore
             }
           }
         }
@@ -57,20 +56,21 @@ const useFetchAnime = () => {
           );
           return null;
         }
-        return response.data.data; // Adjusted path based on typical GraphQL response
+        return response.data.data;
       } catch (error) {
         console.error("Failed to fetch anime data:", error);
         return null;
       }
     }
 
-    fetchAnime(1, 50).then((res) => {
+    fetchAnime(1, 100).then((res) => {
       if (res) {
         const formattedAnime = res.Page.media.map((anime: any) => ({
           id: anime.id,
-          title: anime.title.english || anime.title.romaji, // Added fallback to romaji if English is not available
+          title: anime.title.english || anime.title.romaji,
           coverImage: anime.coverImage.extraLarge,
           description: anime.description,
+          rating: anime.averageScore,
         }));
         setAnimeArray(formattedAnime);
       } else {
