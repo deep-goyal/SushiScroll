@@ -11,8 +11,10 @@ export interface Anime {
 
 const useFetchAnime = () => {
   const [animeArray, setAnimeArray] = useState<Anime[]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     async function fetchAnime(page: number, perPage: number) {
       const query = `
         query ($page: Int, $perPage: Int) {
@@ -72,6 +74,7 @@ const useFetchAnime = () => {
           description: anime.description,
           rating: anime.averageScore,
         }));
+        setLoading(false);
         setAnimeArray(formattedAnime);
       } else {
         console.error("Data load failed.");
@@ -79,7 +82,7 @@ const useFetchAnime = () => {
     });
   }, []);
 
-  return animeArray;
+  return { animeArray, loading };
 };
 
 export default useFetchAnime;

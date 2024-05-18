@@ -2,6 +2,7 @@ import { SimpleGrid, extendTheme, ChakraProvider } from "@chakra-ui/react";
 import { Global } from "@emotion/react";
 import animeHook from "../hooks/useFetchAnime";
 import AnimeCard from "./AnimeCard";
+import LoadingSkeleton from "./LoadingSkeleton";
 
 const theme = extendTheme({
   fonts: {
@@ -12,6 +13,7 @@ const theme = extendTheme({
 
 const AnimeGrid = () => {
   const animeArray = animeHook();
+  const skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   return (
     <ChakraProvider theme={theme}>
       <Global
@@ -24,7 +26,10 @@ const AnimeGrid = () => {
         spacing={10}
         padding={10}
       >
-        {animeArray.map((anime) => (
+        {animeArray.loading &&
+          skeletons.map((skeleton) => <LoadingSkeleton key={skeleton} />)}
+
+        {animeArray.animeArray.map((anime) => (
           <AnimeCard key={anime.id} anime={anime} />
         ))}
       </SimpleGrid>

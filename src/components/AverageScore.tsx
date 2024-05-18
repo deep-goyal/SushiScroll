@@ -8,7 +8,7 @@ interface Props {
 const AverageScore = ({ avgscore }: Props) => {
   let color = avgscore > 80 ? "green" : avgscore > 60 ? "yellow" : "red";
   return (
-    <Badge fontSize={"14px"} paddingX={1} colorScheme={color}>
+    <Badge fontSize={"14px"} padding={1} colorScheme={color}>
       {avgscore}
     </Badge>
   );

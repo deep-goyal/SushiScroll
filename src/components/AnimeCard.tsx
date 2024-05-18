@@ -9,8 +9,8 @@ interface Props {
 
 const AnimeCard = ({ anime }: Props) => {
   return (
-    <Card borderRadius={10}>
-      <Image src={anime.coverImage} overflow="hidden" />
+    <Card borderRadius={10} overflow={"hidden"}>
+      <Image src={anime.coverImage} />
       <CardBody>
         <HStack justifyContent={"space-between"}>
           <Heading fontSize="xl">{anime.title.toLocaleUpperCase()}</Heading>
