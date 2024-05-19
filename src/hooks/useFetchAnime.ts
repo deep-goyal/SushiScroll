@@ -13,10 +13,12 @@ export interface Anime {
 const useFetchAnime = () => {
   const [animeArray, setAnimeArray] = useState<Anime[]>([]);
   const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [hasNextPage, setHasNextPage] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
-    async function fetchAnime(page: number, perPage: number) {
+    const fetchAnime = async (page: number, perPage: number) => {
+      setLoading(true);
       const query = `
         query ($page: Int, $perPage: Int) {
           Page(page: $page, perPage: $perPage) {
@@ -30,6 +32,10 @@ const useFetchAnime = () => {
               }
               description
               averageScore
+            }
+            pageInfo {
+              currentPage
+              lastPage
             }
           }
         }
@@ -64,9 +70,9 @@ const useFetchAnime = () => {
         console.error("Failed to fetch anime data:", error);
         return null;
       }
-    }
+    };
 
-    fetchAnime(1, 100).then((res) => {
+    fetchAnime(page, 20).then((res) => {
       if (res) {
         const formattedAnime = res.Page.media.map((anime: any) => ({
           id: anime.id,
@@ -76,15 +82,22 @@ const useFetchAnime = () => {
           bannerImage: anime.bannerImage,
           rating: anime.averageScore,
         }));
-        setLoading(false);
-        setAnimeArray(formattedAnime);
+        setAnimeArray((prev) => [...prev, ...formattedAnime]);
+        setHasNextPage(page < res.Page.pageInfo.lastPage);
       } else {
         console.error("Data load failed.");
       }
+      setLoading(false);
     });
-  }, []);
+  }, [page]);
 
-  return { animeArray, loading };
+  const loadMore = () => {
+    if (!loading && hasNextPage) {
+      setPage((prev) => prev + 1);
+    }
+  };
+
+  return { animeArray, loading, loadMore, hasNextPage };
 };
 
 export default useFetchAnime;
