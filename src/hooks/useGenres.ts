@@ -3,6 +3,7 @@ import AniList from "../services/api-client";
 
 const useGenres = () => {
   const [genres, setGenres] = useState([]);
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     async function fetchGenres() {
@@ -31,15 +32,16 @@ const useGenres = () => {
 
         const data = response.data.data;
         setGenres(data.GenreCollection);
+        setLoading(false);
       } catch (error) {
         console.error("Fetch genre failed", error);
       }
     }
-
+    setLoading(true);
     fetchGenres();
-  }, []); // Add empty dependency array to run effect only once
+  }, []);
 
-  return genres;
+  return { genres, isLoading };
 };
 
 export default useGenres;

@@ -1,4 +1,3 @@
-import React from "react";
 import { Card, CardBody, HStack, Heading, Image } from "@chakra-ui/react";
 import { Anime } from "../hooks/useFetchAnime";
 import AverageScore from "./AverageScore";

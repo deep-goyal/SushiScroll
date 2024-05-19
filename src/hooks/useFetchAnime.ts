@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AniList from "../services/api-client";
 
 export interface Anime {
   id: number;
   title: string;
   coverImage: string;
+  bannerImage: string;
   description: string;
   rating: number;
 }
@@ -72,6 +73,7 @@ const useFetchAnime = () => {
           title: anime.title.english || anime.title.romaji,
           coverImage: anime.coverImage.extraLarge,
           description: anime.description,
+          bannerImage: anime.bannerImage,
           rating: anime.averageScore,
         }));
         setLoading(false);
