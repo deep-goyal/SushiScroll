@@ -3,7 +3,6 @@ import {
   extendTheme,
   ChakraProvider,
   Button,
-  ButtonGroup,
 } from "@chakra-ui/react";
 import { Global } from "@emotion/react";
 import animeHook from "../hooks/useFetchAnime";
@@ -17,8 +16,13 @@ const theme = extendTheme({
   },
 });
 
-const AnimeGrid = () => {
-  const { animeArray, loading, loadMore, hasNextPage } = animeHook();
+interface Props {
+  selectedGenre: string;
+}
+
+const AnimeGrid = ({ selectedGenre }: Props) => {
+  const { animeArray, loading, loadMore, hasNextPage } =
+    animeHook(selectedGenre);
   const skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
   return (

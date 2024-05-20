@@ -8,9 +8,10 @@ export interface Anime {
   bannerImage: string;
   description: string;
   rating: number;
+  genres: string[];
 }
 
-const useFetchAnime = () => {
+const useFetchAnime = (selectedGenre: string) => {
   const [animeArray, setAnimeArray] = useState<Anime[]>([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -32,6 +33,7 @@ const useFetchAnime = () => {
               }
               description
               averageScore
+              genres
             }
             pageInfo {
               currentPage
@@ -81,15 +83,23 @@ const useFetchAnime = () => {
           description: anime.description,
           bannerImage: anime.bannerImage,
           rating: anime.averageScore,
+          genres: anime.genres,
         }));
-        setAnimeArray((prev) => [...prev, ...formattedAnime]);
+
+        const filteredAnime = selectedGenre
+          ? formattedAnime.filter((anime: any) =>
+              anime.genres.includes(selectedGenre)
+            )
+          : formattedAnime;
+
+        setAnimeArray((prev) => [...prev, ...filteredAnime]);
         setHasNextPage(page < res.Page.pageInfo.lastPage);
       } else {
         console.error("Data load failed.");
       }
       setLoading(false);
     });
-  }, [page]);
+  }, [page, selectedGenre]);
 
   const loadMore = () => {
     if (!loading && hasNextPage) {

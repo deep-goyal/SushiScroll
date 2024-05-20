@@ -1,8 +1,11 @@
-import React from "react";
 import useGenres from "../hooks/useGenres";
-import { List, ListItem, Spinner, Text } from "@chakra-ui/react";
+import { Button, List, ListItem, Spinner, Text } from "@chakra-ui/react";
 
-const Sidebar = () => {
+interface Props {
+  onSelectGenre: (genre: string) => void;
+}
+
+const Sidebar = ({ onSelectGenre }: Props) => {
   const { genres, isLoading } = useGenres();
 
   if (isLoading) return <Spinner />;
@@ -12,7 +15,14 @@ const Sidebar = () => {
       <List>
         {genres.map((genre, index) => (
           <ListItem key={index} paddingY={"5px"}>
-            <Text fontSize={"lg"}>{genre}</Text>
+            <Button
+              fontSize={"lg"}
+              variant={"link"}
+              fontWeight={"plain"}
+              onClick={() => onSelectGenre(genre)}
+            >
+              {genre}
+            </Button>
           </ListItem>
         ))}
       </List>

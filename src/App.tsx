@@ -2,8 +2,11 @@ import { Grid, GridItem, Show } from "@chakra-ui/react";
 import NavBar from "./components/NavBar";
 import AnimeGrid from "./components/AnimeGrid";
 import Sidebar from "./components/Sidebar";
+import { useState } from "react";
 
 function App() {
+  const [selectedGenre, setSelectedGenre] = useState("");
+
   return (
     <>
       <Grid
@@ -17,11 +20,11 @@ function App() {
         </GridItem>
         <Show above="lg">
           <GridItem area="aside" paddingX={5} width={180}>
-            <Sidebar />
+            <Sidebar onSelectGenre={(genre) => setSelectedGenre(genre)} />
           </GridItem>
         </Show>
         <GridItem area="main">
-          <AnimeGrid />
+          <AnimeGrid selectedGenre={selectedGenre} />
         </GridItem>
       </Grid>
     </>
