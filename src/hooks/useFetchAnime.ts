@@ -18,15 +18,22 @@ const useFetchAnime = (selectedGenre: string) => {
   const [hasNextPage, setHasNextPage] = useState(true);
 
   useEffect(() => {
+    setAnimeArray([]);
+    setPage(1);
+    setHasNextPage(true);
+  }, [selectedGenre]);
+
+  useEffect(() => {
     const fetchAnime = async (page: number, perPage: number) => {
       setLoading(true);
       const query = `
-        query ($page: Int, $perPage: Int) {
+        query ($page: Int, $perPage: Int, $genre: String) {
           Page(page: $page, perPage: $perPage) {
-            media(sort: POPULARITY_DESC, type: ANIME) {
+            media(sort: POPULARITY_DESC, type: ANIME, genre_in: [$genre]) {
               id
               title {
                 romaji
+                english
               }
               coverImage {
                 extraLarge
@@ -46,6 +53,7 @@ const useFetchAnime = (selectedGenre: string) => {
       const variables = {
         page: page,
         perPage: perPage,
+        genre: selectedGenre,
       };
 
       const headers = {
@@ -86,13 +94,9 @@ const useFetchAnime = (selectedGenre: string) => {
           genres: anime.genres,
         }));
 
-        const filteredAnime = selectedGenre
-          ? formattedAnime.filter((anime: any) =>
-              anime.genres.includes(selectedGenre)
-            )
-          : formattedAnime;
-
-        setAnimeArray((prev) => [...prev, ...filteredAnime]);
+        setAnimeArray((prev) =>
+          page === 1 ? formattedAnime : [...prev, ...formattedAnime]
+        );
         setHasNextPage(page < res.Page.pageInfo.lastPage);
       } else {
         console.error("Data load failed.");
