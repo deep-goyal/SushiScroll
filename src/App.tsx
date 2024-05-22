@@ -1,9 +1,10 @@
-import { Flex, Grid, GridItem, Show } from "@chakra-ui/react";
+import { Flex, Grid, GridItem, HStack, Show } from "@chakra-ui/react";
 import NavBar from "./components/NavBar";
 import AnimeGrid from "./components/AnimeGrid";
 import Sidebar from "./components/Sidebar";
 import { useState } from "react";
 import SortSelector from "./components/SortSelector";
+import AnimeHeading from "./components/AnimeHeading";
 
 function App() {
   const [selectedGenre, setSelectedGenre] = useState("Action");
@@ -17,7 +18,6 @@ function App() {
           base: `"nav" "main"`,
           lg: `"nav nav" "aside main"`,
         }}
-        backgroundColor={"#121212"}
       >
         <GridItem area="nav">
           <NavBar onSearch={(searchInput) => setSearchInput(searchInput)} />
@@ -31,12 +31,16 @@ function App() {
           </GridItem>
         </Show>
         <GridItem area="main">
-          <Flex paddingLeft={10} marginBottom={2}>
-            <SortSelector
-              selectedOrder={sortOrder}
-              onSelectSortOrder={(sortOrder) => setSortOrder(sortOrder)}
-            />
-          </Flex>
+          <HStack justifyContent={"space-between"} alignItems={"center"}>
+            <AnimeHeading genre={selectedGenre} />
+            <Flex paddingX={10} marginBottom={2}>
+              <SortSelector
+                selectedOrder={sortOrder}
+                onSelectSortOrder={(sortOrder) => setSortOrder(sortOrder)}
+              />
+            </Flex>
+          </HStack>
+
           <AnimeGrid
             selectedGenre={selectedGenre}
             sortOrder={sortOrder}

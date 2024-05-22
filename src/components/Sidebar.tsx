@@ -1,5 +1,12 @@
 import useGenres from "../hooks/useGenres";
-import { Button, List, ListItem, Spinner, Text } from "@chakra-ui/react";
+import {
+  Button,
+  Heading,
+  List,
+  ListItem,
+  Spinner,
+  Text,
+} from "@chakra-ui/react";
 
 interface Props {
   onSelectGenre: (genre: string) => void;
@@ -13,6 +20,9 @@ const Sidebar = ({ onSelectGenre, selectedGenre }: Props) => {
 
   return (
     <div>
+      <Heading fontSize={"2xl"} marginBottom={3}>
+        Genres
+      </Heading>
       <List>
         {genres.map((genre, index) => (
           <ListItem key={index} paddingY={"5px"}>

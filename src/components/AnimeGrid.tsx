@@ -3,6 +3,7 @@ import {
   extendTheme,
   ChakraProvider,
   Button,
+  Flex,
 } from "@chakra-ui/react";
 import { Global } from "@emotion/react";
 import animeHook from "../hooks/useFetchAnime";
@@ -45,14 +46,15 @@ const AnimeGrid = ({ selectedGenre, sortOrder, searchInput }: Props) => {
         {animeArray.map((anime) => (
           <AnimeCard key={anime.id} anime={anime} />
         ))}
-
         {loading &&
           skeletons.map((skeleton) => <LoadingSkeleton key={skeleton} />)}
       </SimpleGrid>
       {hasNextPage && (
-        <Button onClick={loadMore} isLoading={loading} padding={3}>
-          Load More
-        </Button>
+        <Flex justifyContent="flex-end" paddingX={10} paddingBottom={10}>
+          <Button onClick={loadMore} isLoading={loading}>
+            Load More
+          </Button>
+        </Flex>
       )}
     </ChakraProvider>
   );

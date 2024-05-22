@@ -18,7 +18,7 @@ const AnimeCard = ({ anime }: Props) => {
     <Card borderRadius={10} overflow={"hidden"}>
       <Image src={anime.coverImage} />
       <CardBody>
-        <HStack justifyContent={"space-between"}>
+        <HStack justifyContent={"space-between"} alignItems={"flex-start"}>
           <Heading fontSize="xl">{toTitleCase(anime.title)}</Heading>
           <AverageScore avgscore={anime.rating} />
         </HStack>
