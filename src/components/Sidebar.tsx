@@ -3,9 +3,10 @@ import { Button, List, ListItem, Spinner, Text } from "@chakra-ui/react";
 
 interface Props {
   onSelectGenre: (genre: string) => void;
+  selectedGenre: string;
 }
 
-const Sidebar = ({ onSelectGenre }: Props) => {
+const Sidebar = ({ onSelectGenre, selectedGenre }: Props) => {
   const { genres, isLoading } = useGenres();
 
   if (isLoading) return <Spinner />;
@@ -18,7 +19,7 @@ const Sidebar = ({ onSelectGenre }: Props) => {
             <Button
               fontSize={"lg"}
               variant={"link"}
-              fontWeight={"plain"}
+              fontWeight={genre === selectedGenre ? "bold" : "normal"}
               onClick={() => onSelectGenre(genre)}
             >
               {genre}
