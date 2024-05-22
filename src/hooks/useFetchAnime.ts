@@ -14,9 +14,10 @@ export interface Anime {
 interface Props {
   selectedGenre: string;
   sortOrder: string;
+  searchInput: string;
 }
 
-const useFetchAnime = ({ selectedGenre, sortOrder }: Props) => {
+const useFetchAnime = ({ selectedGenre, sortOrder, searchInput }: Props) => {
   const [animeArray, setAnimeArray] = useState<Anime[]>([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -26,41 +27,69 @@ const useFetchAnime = ({ selectedGenre, sortOrder }: Props) => {
     setAnimeArray([]);
     setPage(1);
     setHasNextPage(true);
-  }, [selectedGenre, sortOrder]);
+  }, [selectedGenre, sortOrder, searchInput]);
 
   useEffect(() => {
     const fetchAnime = async (page: number, perPage: number) => {
       setLoading(true);
-      const query = `
-        query ($page: Int, $perPage: Int, $genre: String, $sortOrder: MediaSort) {
-          Page(page: $page, perPage: $perPage) {
-            media(sort: [$sortOrder], type: ANIME, genre_in: [$genre]) {
-              id
-              title {
-                romaji
-                english
+      const query =
+        searchInput === ""
+          ? `
+          query ($page: Int, $perPage: Int, $genre: String, $sortOrder: MediaSort) {
+            Page(page: $page, perPage: $perPage) {
+              media(sort: [$sortOrder], type: ANIME, genre_in: [$genre]) {
+                id
+                title {
+                  romaji
+                  english
+                }
+                coverImage {
+                  extraLarge
+                }
+                description
+                averageScore
+                genres
               }
-              coverImage {
-                extraLarge
+              pageInfo {
+                currentPage
+                lastPage
               }
-              description
-              averageScore
-              genres
-            }
-            pageInfo {
-              currentPage
-              lastPage
             }
           }
-        }
-      `;
+        `
+          : `
+          query ($page: Int, $perPage: Int, $genre: String, $sortOrder: MediaSort, $search: String) {
+            Page(page: $page, perPage: $perPage) {
+              media(sort: [$sortOrder], type: ANIME, genre_in: [$genre], search: $search) {
+                id
+                title {
+                  romaji
+                  english
+                }
+                coverImage {
+                  extraLarge
+                }
+                description
+                averageScore
+                genres
+              }
+              pageInfo {
+                currentPage
+                lastPage
+              }
+            }
+          }
+        `;
 
-      const variables = {
+      const variables: Record<string, any> = {
         page: page,
         perPage: perPage,
         genre: selectedGenre,
         sortOrder: sortOrder,
       };
+      if (searchInput !== "") {
+        variables.search = searchInput;
+      }
 
       const headers = {
         "Content-Type": "application/json",
@@ -95,7 +124,7 @@ const useFetchAnime = ({ selectedGenre, sortOrder }: Props) => {
           title: anime.title.english || anime.title.romaji,
           coverImage: anime.coverImage.extraLarge,
           description: anime.description,
-          bannerImage: anime.bannerImage,
+          bannerImage: anime.bannerImage || "",
           rating: anime.averageScore,
           genres: anime.genres,
         }));
@@ -109,7 +138,7 @@ const useFetchAnime = ({ selectedGenre, sortOrder }: Props) => {
       }
       setLoading(false);
     });
-  }, [page, selectedGenre, sortOrder]);
+  }, [page, selectedGenre, sortOrder, searchInput]);
 
   const loadMore = () => {
     if (!loading && hasNextPage) {

@@ -19,12 +19,14 @@ const theme = extendTheme({
 interface Props {
   selectedGenre: string;
   sortOrder: string;
+  searchInput: string;
 }
 
-const AnimeGrid = ({ selectedGenre, sortOrder }: Props) => {
+const AnimeGrid = ({ selectedGenre, sortOrder, searchInput }: Props) => {
   const { animeArray, loading, loadMore, hasNextPage } = animeHook({
     selectedGenre,
     sortOrder,
+    searchInput,
   });
   const skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 

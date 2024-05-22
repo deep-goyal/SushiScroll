@@ -8,6 +8,7 @@ import SortSelector from "./components/SortSelector";
 function App() {
   const [selectedGenre, setSelectedGenre] = useState("Action");
   const [sortOrder, setSortOrder] = useState("POPULARITY_DESC");
+  const [searchInput, setSearchInput] = useState("");
 
   return (
     <>
@@ -19,7 +20,7 @@ function App() {
         backgroundColor={"#121212"}
       >
         <GridItem area="nav">
-          <NavBar />
+          <NavBar onSearch={(searchInput) => setSearchInput(searchInput)} />
         </GridItem>
         <Show above="lg">
           <GridItem area="aside" paddingX={5} width={180}>
@@ -36,7 +37,11 @@ function App() {
               onSelectSortOrder={(sortOrder) => setSortOrder(sortOrder)}
             />
           </Flex>
-          <AnimeGrid selectedGenre={selectedGenre} sortOrder={sortOrder} />
+          <AnimeGrid
+            selectedGenre={selectedGenre}
+            sortOrder={sortOrder}
+            searchInput={searchInput}
+          />
         </GridItem>
       </Grid>
     </>
