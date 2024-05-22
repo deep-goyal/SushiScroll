@@ -11,8 +11,8 @@ import LoadingSkeleton from "./LoadingSkeleton";
 
 const theme = extendTheme({
   fonts: {
-    heading: "'PT Serif', sans-serif",
-    body: "'PT Serif', sans-serif",
+    heading: "'Inter Tight', sans-serif",
+    body: "'Inter Tight', sans-serif",
   },
 });
 
@@ -29,7 +29,7 @@ const AnimeGrid = ({ selectedGenre }: Props) => {
     <ChakraProvider theme={theme}>
       <Global
         styles={`
-          @import url('https://fonts.googleapis.com/css2?family=PT+Serif:wght@400&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital@0;1&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
         `}
       />
       <SimpleGrid
