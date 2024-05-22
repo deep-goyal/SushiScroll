@@ -16,6 +16,7 @@ function App() {
           base: `"nav" "main"`,
           lg: `"nav nav" "aside main"`,
         }}
+        backgroundColor={"#121212"}
       >
         <GridItem area="nav">
           <NavBar />
@@ -35,7 +36,6 @@ function App() {
               onSelectSortOrder={(sortOrder) => setSortOrder(sortOrder)}
             />
           </Flex>
-
           <AnimeGrid selectedGenre={selectedGenre} sortOrder={sortOrder} />
         </GridItem>
       </Grid>

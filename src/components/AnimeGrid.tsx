@@ -40,11 +40,12 @@ const AnimeGrid = ({ selectedGenre, sortOrder }: Props) => {
         spacing={10}
         padding={10}
       >
-        {loading &&
-          skeletons.map((skeleton) => <LoadingSkeleton key={skeleton} />)}
         {animeArray.map((anime) => (
           <AnimeCard key={anime.id} anime={anime} />
         ))}
+
+        {loading &&
+          skeletons.map((skeleton) => <LoadingSkeleton key={skeleton} />)}
       </SimpleGrid>
       {hasNextPage && (
         <Button onClick={loadMore} isLoading={loading} padding={3}>

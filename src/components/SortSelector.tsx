@@ -1,5 +1,6 @@
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { BsChevronDown } from "react-icons/bs";
+import { FaSort } from "react-icons/fa";
 
 interface Props {
   onSelectSortOrder: (sortOrder: string) => void;
@@ -8,10 +9,10 @@ interface Props {
 
 const SortSelector = ({ onSelectSortOrder, selectedOrder }: Props) => {
   const sortOrders = [
-    { value: "TITLE_ROMAJI", label: "Title" },
-    { value: "START_DATE", label: "Start Date" },
-    { value: "END_DATE", label: "End Date" },
     { value: "POPULARITY_DESC", label: "Popularity" },
+    { value: "TITLE_ROMAJI", label: "Title" },
+    { value: "START_DATE_DESC", label: "Start Date" },
+    { value: "END_DATE_DESC", label: "End Date" },
     { value: "SCORE_DESC", label: "Ratings" },
   ];
 
@@ -21,8 +22,16 @@ const SortSelector = ({ onSelectSortOrder, selectedOrder }: Props) => {
 
   return (
     <Menu>
-      <MenuButton as={Button} rightIcon={<BsChevronDown />}>
-        Order by: {currentSortOrder?.label}
+      <MenuButton
+        as={Button}
+        rightIcon={<BsChevronDown />}
+        backgroundColor="black.500"
+        color="white"
+        _hover={{ backgroundColor: "blue.600" }}
+        _active={{ backgroundColor: "blue.700" }}
+        leftIcon={<FaSort />}
+      >
+        {currentSortOrder?.label}
       </MenuButton>
       <MenuList>
         {sortOrders.map((sortval) => (
@@ -30,6 +39,11 @@ const SortSelector = ({ onSelectSortOrder, selectedOrder }: Props) => {
             onClick={() => onSelectSortOrder(sortval.value)}
             key={sortval.value}
             value={sortval.value}
+            backgroundColor={
+              selectedOrder === sortval.value ? "blue.250" : "normal"
+            }
+            _hover={{ backgroundColor: "gray.100" }}
+            _focus={{ backgroundColor: "gray.300" }}
           >
             {sortval.label}
           </MenuItem>
