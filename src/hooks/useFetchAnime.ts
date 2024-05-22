@@ -11,7 +11,12 @@ export interface Anime {
   genres: string[];
 }
 
-const useFetchAnime = (selectedGenre: string) => {
+interface Props {
+  selectedGenre: string;
+  sortOrder: string;
+}
+
+const useFetchAnime = ({ selectedGenre, sortOrder }: Props) => {
   const [animeArray, setAnimeArray] = useState<Anime[]>([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -21,15 +26,15 @@ const useFetchAnime = (selectedGenre: string) => {
     setAnimeArray([]);
     setPage(1);
     setHasNextPage(true);
-  }, [selectedGenre]);
+  }, [selectedGenre, sortOrder]);
 
   useEffect(() => {
     const fetchAnime = async (page: number, perPage: number) => {
       setLoading(true);
       const query = `
-        query ($page: Int, $perPage: Int, $genre: String) {
+        query ($page: Int, $perPage: Int, $genre: String, $sortOrder: MediaSort) {
           Page(page: $page, perPage: $perPage) {
-            media(sort: POPULARITY_DESC, type: ANIME, genre_in: [$genre]) {
+            media(sort: [$sortOrder], type: ANIME, genre_in: [$genre]) {
               id
               title {
                 romaji
@@ -54,6 +59,7 @@ const useFetchAnime = (selectedGenre: string) => {
         page: page,
         perPage: perPage,
         genre: selectedGenre,
+        sortOrder: sortOrder,
       };
 
       const headers = {
@@ -103,7 +109,7 @@ const useFetchAnime = (selectedGenre: string) => {
       }
       setLoading(false);
     });
-  }, [page, selectedGenre]);
+  }, [page, selectedGenre, sortOrder]);
 
   const loadMore = () => {
     if (!loading && hasNextPage) {

@@ -1,4 +1,4 @@
-import { Grid, GridItem, HStack, Show } from "@chakra-ui/react";
+import { Flex, Grid, GridItem, HStack, Show } from "@chakra-ui/react";
 import NavBar from "./components/NavBar";
 import AnimeGrid from "./components/AnimeGrid";
 import Sidebar from "./components/Sidebar";
@@ -7,6 +7,7 @@ import SortSelector from "./components/SortSelector";
 
 function App() {
   const [selectedGenre, setSelectedGenre] = useState("Action");
+  const [sortOrder, setSortOrder] = useState("POPULARITY_DESC");
 
   return (
     <>
@@ -28,11 +29,14 @@ function App() {
           </GridItem>
         </Show>
         <GridItem area="main">
-          <HStack paddingLeft={10} spacing={5} marginBottom={2}>
-            <SortSelector />
-          </HStack>
+          <Flex paddingLeft={10} marginBottom={2}>
+            <SortSelector
+              selectedOrder={sortOrder}
+              onSelectSortOrder={(sortOrder) => setSortOrder(sortOrder)}
+            />
+          </Flex>
 
-          <AnimeGrid selectedGenre={selectedGenre} />
+          <AnimeGrid selectedGenre={selectedGenre} sortOrder={sortOrder} />
         </GridItem>
       </Grid>
     </>
