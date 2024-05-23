@@ -6,7 +6,7 @@ interface Props {
 
 const AnimeHeading = ({ genre }: Props) => {
   return (
-    <Heading as={"h1"} fontSize={"5xl"} marginBottom={5} paddingX={10}>
+    <Heading as={"h1"} fontSize={"5xl"} marginBottom={5} paddingX={5}>
       {genre} Anime
     </Heading>
   );

@@ -1,21 +1,7 @@
-import {
-  SimpleGrid,
-  extendTheme,
-  ChakraProvider,
-  Button,
-  Flex,
-} from "@chakra-ui/react";
-import { Global } from "@emotion/react";
+import { SimpleGrid, Button, Flex, Text } from "@chakra-ui/react";
 import animeHook from "../hooks/useFetchAnime";
 import AnimeCard from "./AnimeCard";
 import LoadingSkeleton from "./LoadingSkeleton";
-
-const theme = extendTheme({
-  fonts: {
-    heading: "'Inter Tight', sans-serif",
-    body: "'Inter Tight', sans-serif",
-  },
-});
 
 interface Props {
   selectedGenre: string;
@@ -29,34 +15,46 @@ const AnimeGrid = ({ selectedGenre, sortOrder, searchInput }: Props) => {
     sortOrder,
     searchInput,
   });
-  const skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  const skeletons = Array(10).fill(0);
 
   return (
-    <ChakraProvider theme={theme}>
-      <Global
-        styles={`
-          @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital@0;1&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-        `}
-      />
+    <>
       <SimpleGrid
         columns={{ sm: 1, md: 2, lg: 3, xl: 5 }}
-        spacing={10}
-        padding={10}
+        spacing={8}
+        padding={5}
       >
-        {animeArray.map((anime) => (
-          <AnimeCard key={anime.id} anime={anime} />
-        ))}
+        {animeArray.length > 0
+          ? animeArray.map((anime) => (
+              <AnimeCard key={anime.id} anime={anime} />
+            ))
+          : !loading && (
+              <Text
+                fontSize="2xl"
+                color="gray.400"
+                textAlign="center"
+                width="100%"
+              >
+                No results found.
+              </Text>
+            )}
         {loading &&
-          skeletons.map((skeleton) => <LoadingSkeleton key={skeleton} />)}
+          skeletons.map((_, index) => <LoadingSkeleton key={index} />)}
       </SimpleGrid>
+
       {hasNextPage && (
         <Flex justifyContent="flex-end" paddingX={10} paddingBottom={10}>
-          <Button onClick={loadMore} isLoading={loading}>
+          <Button
+            onClick={loadMore}
+            isLoading={loading}
+            variant="outline"
+            _hover={{ bg: "gray.700" }}
+          >
             Load More
           </Button>
         </Flex>
       )}
-    </ChakraProvider>
+    </>
   );
 };
 

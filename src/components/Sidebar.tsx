@@ -30,6 +30,7 @@ const Sidebar = ({ onSelectGenre, selectedGenre }: Props) => {
               fontSize={"lg"}
               variant={"link"}
               fontWeight={genre === selectedGenre ? "bold" : "normal"}
+              textDecoration={genre === selectedGenre ? "underline" : ""}
               onClick={() => onSelectGenre(genre)}
             >
               {genre}

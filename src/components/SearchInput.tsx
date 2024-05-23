@@ -8,6 +8,7 @@ interface Props {
 
 const SearchInput = ({ onSearch }: Props) => {
   const ref = useRef<HTMLInputElement>(null);
+
   return (
     <form
       onSubmit={(event) => {
@@ -16,12 +17,13 @@ const SearchInput = ({ onSearch }: Props) => {
       }}
     >
       <InputGroup>
-        <InputLeftElement children={<BsSearch />} />
+        <InputLeftElement pointerEvents="none" children={<BsSearch />} />
         <Input
           ref={ref}
           borderRadius={20}
           placeholder="Search Anime..."
           variant={"filled"}
+          onChange={(event) => onSearch(event.target.value)}
         />
       </InputGroup>
     </form>

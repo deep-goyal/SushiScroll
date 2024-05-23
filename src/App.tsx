@@ -23,7 +23,7 @@ function App() {
           <NavBar onSearch={(searchInput) => setSearchInput(searchInput)} />
         </GridItem>
         <Show above="lg">
-          <GridItem area="aside" paddingX={5} width={180}>
+          <GridItem area="aside" paddingLeft={5} width={180}>
             <Sidebar
               selectedGenre={selectedGenre}
               onSelectGenre={(genre) => setSelectedGenre(genre)}

@@ -1,3 +1,10 @@
 form {
   width: 100%;
 }
+
+@font-face {
+  font-family: "Nuku";
+  src: url("./assets/nuku.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}

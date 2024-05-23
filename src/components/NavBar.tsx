@@ -1,5 +1,4 @@
-import { HStack, Image } from "@chakra-ui/react";
-import Logo from "../assets/logo.png";
+import { HStack, Heading } from "@chakra-ui/react";
 import ColorModeSwitch from "./ColorModeSwitch";
 import SearchInput from "./SearchInput";
 
@@ -13,9 +12,13 @@ const NavBar = ({ onSearch }: Props) => {
       justifyContent={"space-between"}
       padding="20px"
       marginBottom={5}
-      spacing={5}
+      spacing={10}
+      wrap="nowrap"
+      overflow="hidden"
     >
-      <Image src={Logo} boxSize="60px 120px" />
+      <Heading as={"h1"} id="mainheading" fontSize={"8xl"} whiteSpace="nowrap">
+        Sushi Scroll
+      </Heading>
       <SearchInput onSearch={onSearch} />
       <ColorModeSwitch />
     </HStack>

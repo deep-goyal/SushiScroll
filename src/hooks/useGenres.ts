@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AniList from "../services/api-client";
 
 const useGenres = () => {
@@ -31,7 +31,11 @@ const useGenres = () => {
         }
 
         const data = response.data.data;
-        setGenres(data.GenreCollection);
+        // Exclude "Hentai" genre
+        const filteredGenres = data.GenreCollection.filter(
+          (genre: string) => genre !== "Hentai"
+        );
+        setGenres(filteredGenres);
         setLoading(false);
       } catch (error) {
         console.error("Fetch genre failed", error);

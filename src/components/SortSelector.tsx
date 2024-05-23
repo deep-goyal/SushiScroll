@@ -25,10 +25,6 @@ const SortSelector = ({ onSelectSortOrder, selectedOrder }: Props) => {
       <MenuButton
         as={Button}
         rightIcon={<BsChevronDown />}
-        backgroundColor="black.500"
-        color="white"
-        _hover={{ backgroundColor: "blue.600" }}
-        _active={{ backgroundColor: "blue.700" }}
         leftIcon={<FaSort />}
       >
         {currentSortOrder?.label}
@@ -39,11 +35,6 @@ const SortSelector = ({ onSelectSortOrder, selectedOrder }: Props) => {
             onClick={() => onSelectSortOrder(sortval.value)}
             key={sortval.value}
             value={sortval.value}
-            backgroundColor={
-              selectedOrder === sortval.value ? "blue.250" : "normal"
-            }
-            _hover={{ backgroundColor: "gray.100" }}
-            _focus={{ backgroundColor: "gray.300" }}
           >
             {sortval.label}
           </MenuItem>
