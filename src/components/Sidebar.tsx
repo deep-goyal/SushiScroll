@@ -1,12 +1,5 @@
 import useGenres from "../hooks/useGenres";
-import {
-  Button,
-  Heading,
-  List,
-  ListItem,
-  Spinner,
-  Text,
-} from "@chakra-ui/react";
+import { Button, Heading, List, ListItem, Spinner } from "@chakra-ui/react";
 
 interface Props {
   onSelectGenre: (genre: string) => void;
