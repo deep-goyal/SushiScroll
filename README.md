@@ -62,7 +62,7 @@ Contributions are more than welcome! To contribute, follow these steps:
 
 ## License
 
-This project is licensed under
+This project is licensed under the BSD-3-Clause. See `LICENSE.txt` for more information.
 
 ## Acknowledgments
 
