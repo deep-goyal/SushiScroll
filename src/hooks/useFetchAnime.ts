@@ -11,6 +11,7 @@ export interface Anime {
   genres: string[];
   trailerid: string;
   platform: string;
+  avgcolor: string;
 }
 
 interface Props {
@@ -69,6 +70,7 @@ const useFetchAnime = ({ selectedGenre, sortOrder, searchInput }: Props) => {
                 }
                 coverImage {
                   extraLarge
+                  color
                 }
                 averageScore
                 genres
@@ -126,6 +128,7 @@ const useFetchAnime = ({ selectedGenre, sortOrder, searchInput }: Props) => {
             coverImage: anime.coverImage.extraLarge,
             rating: anime.averageScore,
             genres: anime.genres,
+            avgcolor: anime.coverImage.color,
           }));
 
           setAnimeArray((prev) =>

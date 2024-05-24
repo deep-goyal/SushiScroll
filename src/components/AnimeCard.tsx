@@ -16,7 +16,15 @@ const toTitleCase = (str: string) => {
 
 const AnimeCard = ({ anime }: Props) => {
   return (
-    <Card borderRadius={10} overflow={"hidden"}>
+    <Card
+      borderRadius={10}
+      overflow={"hidden"}
+      _hover={{
+        transform: "scale(1.05)",
+        boxShadow: "md",
+        transition: "transform 0.3s, box-shadow 0.3s",
+      }}
+    >
       <Link to={`/anime/${anime.id}`}>
         <Image src={anime.coverImage} />
         <CardBody>

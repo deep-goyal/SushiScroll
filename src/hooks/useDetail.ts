@@ -19,6 +19,7 @@ const useDetail = () => {
                 }
                 coverImage {
                   extraLarge
+                  color
                 }
                 bannerImage
                 description
@@ -54,6 +55,7 @@ const useDetail = () => {
             genres: data.genres,
             trailerid: data.trailer?.id || "",
             platform: data.trailer?.site || "",
+            avgcolor: data.coverImage.color,
           });
         } else {
           console.error(
