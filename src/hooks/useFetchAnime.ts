@@ -26,99 +26,94 @@ const useFetchAnime = ({ selectedGenre, sortOrder, searchInput }: Props) => {
   const [page, setPage] = useState(1);
   const [hasNextPage, setHasNextPage] = useState(true);
 
-  useEffect(() => {
-    setAnimeArray([]);
-    setPage(1);
-    setHasNextPage(true);
-  }, [selectedGenre, sortOrder, searchInput]);
-
-  useEffect(() => {
-    const fetchAnime = async (page: number, perPage: number) => {
-      setLoading(true);
-      const query =
-        searchInput === ""
-          ? `
-          query ($page: Int, $perPage: Int, $genre: String, $sortOrder: MediaSort) {
-            Page(page: $page, perPage: $perPage) {
-              media(sort: [$sortOrder], type: ANIME, genre_in: [$genre]) {
-                id
-                title {
-                  romaji
-                  english
-                }
-                coverImage {
-                  extraLarge
-                }
-                averageScore
-                genres
+  const fetchAnime = async (page: number, perPage: number) => {
+    setLoading(true);
+    const query =
+      searchInput === ""
+        ? `
+        query ($page: Int, $perPage: Int, $genre: String, $sortOrder: MediaSort) {
+          Page(page: $page, perPage: $perPage) {
+            media(sort: [$sortOrder], type: ANIME, genre_in: [$genre]) {
+              id
+              title {
+                romaji
+                english
               }
-              pageInfo {
-                currentPage
-                lastPage
+              coverImage {
+                extraLarge
+                color
               }
+              averageScore
+              genres
+            }
+            pageInfo {
+              currentPage
+              lastPage
             }
           }
-        `
-          : `
-          query ($page: Int, $perPage: Int, $genre: String, $sortOrder: MediaSort, $search: String) {
-            Page(page: $page, perPage: $perPage) {
-              media(sort: [$sortOrder], type: ANIME, genre_in: [$genre], search: $search) {
-                id
-                title {
-                  romaji
-                  english
-                }
-                coverImage {
-                  extraLarge
-                  color
-                }
-                averageScore
-                genres
-              }
-              pageInfo {
-                currentPage
-                lastPage
-              }
-            }
-          }
-        `;
-
-      const variables: Record<string, any> = {
-        page: page,
-        perPage: perPage,
-        genre: selectedGenre,
-        sortOrder: sortOrder,
-      };
-      if (searchInput !== "") {
-        variables.search = searchInput;
-      }
-
-      const headers = {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      };
-
-      try {
-        const response = await AniList.post(
-          "",
-          { query, variables },
-          { headers }
-        );
-        if (response.status !== 200) {
-          console.error(
-            "API response error:",
-            response.status,
-            response.statusText
-          );
-          return null;
         }
-        return response.data.data;
-      } catch (error) {
-        console.error("Failed to fetch anime data:", error);
-        return null;
-      }
+      `
+        : `
+        query ($page: Int, $perPage: Int, $genre: String, $sortOrder: MediaSort, $search: String) {
+          Page(page: $page, perPage: $perPage) {
+            media(sort: [$sortOrder], type: ANIME, genre_in: [$genre], search: $search) {
+              id
+              title {
+                romaji
+                english
+              }
+              coverImage {
+                extraLarge
+                color
+              }
+              averageScore
+              genres
+            }
+            pageInfo {
+              currentPage
+              lastPage
+            }
+          }
+        }
+      `;
+
+    const variables: Record<string, any> = {
+      page: page,
+      perPage: perPage,
+      genre: selectedGenre,
+      sortOrder: sortOrder,
+    };
+    if (searchInput !== "") {
+      variables.search = searchInput;
+    }
+
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
     };
 
+    try {
+      const response = await AniList.post(
+        "",
+        { query, variables },
+        { headers }
+      );
+      if (response.status !== 200) {
+        console.error(
+          "API response error:",
+          response.status,
+          response.statusText
+        );
+        return null;
+      }
+      return response.data.data;
+    } catch (error) {
+      console.error("Failed to fetch anime data:", error);
+      return null;
+    }
+  };
+
+  const loadAnime = (page: number) => {
     fetchAnime(page, 20)
       .then((res) => {
         if (res) {
@@ -144,7 +139,20 @@ const useFetchAnime = ({ selectedGenre, sortOrder, searchInput }: Props) => {
         console.error("Error fetching anime data:", error);
         setLoading(false);
       });
-  }, [page, selectedGenre, sortOrder, searchInput]);
+  };
+
+  useEffect(() => {
+    setAnimeArray([]);
+    setPage(1);
+    setHasNextPage(true);
+    loadAnime(1);
+  }, [selectedGenre, sortOrder, searchInput]);
+
+  useEffect(() => {
+    if (page > 1) {
+      loadAnime(page);
+    }
+  }, [page]);
 
   const loadMore = () => {
     if (!loading && hasNextPage) {
