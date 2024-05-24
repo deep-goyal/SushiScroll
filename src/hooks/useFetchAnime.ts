@@ -9,6 +9,8 @@ export interface Anime {
   description: string;
   rating: number;
   genres: string[];
+  trailerid: string;
+  platform: string;
 }
 
 interface Props {
@@ -46,7 +48,6 @@ const useFetchAnime = ({ selectedGenre, sortOrder, searchInput }: Props) => {
                 coverImage {
                   extraLarge
                 }
-                description
                 averageScore
                 genres
               }
@@ -69,7 +70,6 @@ const useFetchAnime = ({ selectedGenre, sortOrder, searchInput }: Props) => {
                 coverImage {
                   extraLarge
                 }
-                description
                 averageScore
                 genres
               }
@@ -117,27 +117,30 @@ const useFetchAnime = ({ selectedGenre, sortOrder, searchInput }: Props) => {
       }
     };
 
-    fetchAnime(page, 20).then((res) => {
-      if (res) {
-        const formattedAnime = res.Page.media.map((anime: any) => ({
-          id: anime.id,
-          title: anime.title.english || anime.title.romaji,
-          coverImage: anime.coverImage.extraLarge,
-          description: anime.description,
-          bannerImage: anime.bannerImage || "",
-          rating: anime.averageScore,
-          genres: anime.genres,
-        }));
+    fetchAnime(page, 20)
+      .then((res) => {
+        if (res) {
+          const formattedAnime = res.Page.media.map((anime: any) => ({
+            id: anime.id,
+            title: anime.title.english || anime.title.romaji,
+            coverImage: anime.coverImage.extraLarge,
+            rating: anime.averageScore,
+            genres: anime.genres,
+          }));
 
-        setAnimeArray((prev) =>
-          page === 1 ? formattedAnime : [...prev, ...formattedAnime]
-        );
-        setHasNextPage(page < res.Page.pageInfo.lastPage);
-      } else {
-        console.error("Data load failed.");
-      }
-      setLoading(false);
-    });
+          setAnimeArray((prev) =>
+            page === 1 ? formattedAnime : [...prev, ...formattedAnime]
+          );
+          setHasNextPage(page < res.Page.pageInfo.lastPage);
+        } else {
+          console.error("Data load failed.");
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching anime data:", error);
+        setLoading(false);
+      });
   }, [page, selectedGenre, sortOrder, searchInput]);
 
   const loadMore = () => {
